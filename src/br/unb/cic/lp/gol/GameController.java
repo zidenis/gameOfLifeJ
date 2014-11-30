@@ -14,29 +14,29 @@ public class GameController {
 
     private GameEngine engine;
     private GameView board;
-    private Statistics statistics;
 
     private boolean running;
     private int delayTime = 1000;
+    
+    public void initController() {
+        this.engine = new GameEngine(Main.GRID_HEIGHT, Main.GRID_WIDTH, new Statistics());
+    }
 
     public GameEngine getEngine() {
         return engine;
-    }
-
-    public void setEngine(GameEngine engine) {
-        this.engine = engine;
-    }
-
-    public GameView getBoard() {
-        return board;
     }
 
     public void setBoard(GameView board) {
         this.board = board;
     }
 
-    public void setStatistics(Statistics statistics) {
-        this.statistics = statistics;
+    public Statistics getStatistics() {
+        return engine.getStatistics();
+    }
+    
+    public void reset() {
+        engine.reset();
+        board.update();
     }
 
     public void start() {
@@ -44,15 +44,8 @@ public class GameController {
         nextGeneration();
     }
 
-    public void stop() {
-        running = false;
-    }
-
     public void halt() {
-        //oops, nao muito legal fazer sysout na classe Controller
-        System.out.println("\n \n");
-        statistics.display();
-        System.exit(0);
+        running = false;
     }
 
     public void makeCellAlive(int line, int col) {
@@ -83,4 +76,24 @@ public class GameController {
             );
         }
     }
+
+    public void setDelayTime(int delayTime) {
+        this.delayTime = delayTime;
+    }
+    
+    public boolean isCellAlive(int lin, int col) {
+        return engine.isCellAlive(lin, col);
+    }
+    
+    public void killAllCells() {
+        engine.killAllCells();
+        halt();
+        board.update();
+    }
+    
+    public void killCell(int lin, int col) {
+        engine.killCell(lin, col);
+        board.update();
+    }
+    
 }
