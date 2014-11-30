@@ -5,9 +5,7 @@ public class Main {
     public static final int GRID_HEIGHT = 25;
     
     public static void main(String args[]) {
-        GameController controller = new GameController();
-        controller.initController();
-        GameView board = new GameViewSwing(controller);
-        controller.setBoard(board);
+        GameController controller = new GameController(new GameEngine(GRID_HEIGHT, GRID_WIDTH, new Statistics()));
+        controller.setView(new GameViewSwing(controller));
     }
 }

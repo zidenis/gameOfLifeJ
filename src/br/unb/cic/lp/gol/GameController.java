@@ -15,17 +15,17 @@ import java.util.TimerTask;
 public class GameController {
 
     private GameEngine engine;
-    private GameView board;
+    private GameView view;
 
     private boolean running;
     private int delayTime = 1000;
 
-    public void initController() {
-        this.engine = new GameEngine(Main.GRID_HEIGHT, Main.GRID_WIDTH, new Statistics());
+    public GameController(GameEngine engine) {
+        this.engine = engine;
     }
 
-    public void setBoard(GameView board) {
-        this.board = board;
+    public void setView(GameView view) {
+        this.view = view;
     }
 
     public Statistics getStatistics() {
@@ -47,12 +47,12 @@ public class GameController {
 
     public void reset() {
         engine.reset();
-        board.update();
+        view.update();
     }
 
     public void nextGeneration() {
         engine.nextGeneration();
-        board.update();
+        view.update();
         runningTest();
     }
 
@@ -73,7 +73,7 @@ public class GameController {
     public void makeCellAlive(int line, int col) {
         try {
             engine.makeCellAlive(line, col);
-            board.update();
+            view.update();
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
         }
@@ -85,12 +85,12 @@ public class GameController {
 
     public void killCell(int lin, int col) {
         engine.killCell(lin, col);
-        board.update();
+        view.update();
     }
 
     public void killAllCells() {
         engine.killAllCells();
         halt();
-        board.update();
+        view.update();
     }
 }
