@@ -20,11 +20,10 @@ public class GameViewSwing extends JFrame implements GameView {
     private final Color ONOVER_COLOR = Color.CYAN;
     private final Color ALIVE_COLOR = Color.RED;
 
-    private final GameEngine engine;
     private final GameController controller;
+    private Statistics statistics;
 
-    public GameViewSwing(GameController controller, GameEngine engine) {
-        this.engine = engine;
+    public GameViewSwing(GameController controller) {
         this.controller = controller;
         initComponents();
         setVisible(true);
@@ -32,9 +31,13 @@ public class GameViewSwing extends JFrame implements GameView {
 
     @Override
     public void update() {
+        statistics = controller.getStatistics();
+        statsRevivedValue.setText(String.valueOf(statistics.getRevivedCells()));
+        statsKilledValue.setText(String.valueOf(statistics.getKilledCells()));
+        statsGenerationsValue.setText(String.valueOf(statistics.getNumOfGenerations()));
         for (Component c :gridPanel.getComponents()) {
             GridCell cell = (GridCell) c;
-            if (engine.isCellAlive(cell.numLine, cell.numCol)) {
+            if (controller.isCellAlive(cell.numLine, cell.numCol)) {
                 cell.setAlive();
             } else {
                 cell.setDead();
@@ -49,29 +52,28 @@ public class GameViewSwing extends JFrame implements GameView {
         private final int numLine;
         private final int numCol;
 
-
         public GridCell(int line, int col) {
             setBorder(new LineBorder(Color.LIGHT_GRAY));
             background = getBackground();
             DEFAULT_BACKGROUND = background;
             numLine = line;
             numCol = col;
-            
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     setBackground(ONOVER_COLOR);
                 }
-
                 @Override
                 public void mouseExited(MouseEvent e) {
                     setBackground(background);
                 }
-
                 @Override
                 public void mousePressed(MouseEvent e) {
-                System.out.println("Cell: " + numLine + "," + numCol);
-                    controller.makeCellAlive(numLine, numCol);
+                    if (controller.isCellAlive(numLine, numCol)) {
+                        controller.killCell(numLine, numCol);
+                    } else {
+                        controller.makeCellAlive(numLine, numCol);
+                    }
                 }
             });
         }   
@@ -101,12 +103,15 @@ public class GameViewSwing extends JFrame implements GameView {
         statsRevivedValue = new javax.swing.JLabel();
         statsKilledLabel = new javax.swing.JLabel();
         statsKilledValue = new javax.swing.JLabel();
+        statsGenerationsLabel = new javax.swing.JLabel();
+        statsGenerationsValue = new javax.swing.JLabel();
+        speedSlider = new javax.swing.JSlider();
         bottomPanel = new javax.swing.JPanel();
         prevButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
-        speedSlider = new javax.swing.JSlider();
+        resetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,7 +131,7 @@ public class GameViewSwing extends JFrame implements GameView {
         rightPanel.setLayout(new javax.swing.BoxLayout(rightPanel, javax.swing.BoxLayout.Y_AXIS));
 
         strategiesPane.setBackground(new java.awt.Color(238, 238, 238));
-        strategiesPane.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Strategy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), java.awt.Color.lightGray)); // NOI18N
+        strategiesPane.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Strategy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
 
         strategiesList.setBackground(new java.awt.Color(238, 238, 238));
         strategiesList.setModel(new javax.swing.AbstractListModel() {
@@ -138,31 +143,59 @@ public class GameViewSwing extends JFrame implements GameView {
 
         rightPanel.add(strategiesPane);
 
-        statisticsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), java.awt.Color.lightGray)); // NOI18N
-        statisticsPanel.setLayout(new java.awt.GridLayout(2, 2));
+        statisticsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
+        statisticsPanel.setLayout(new java.awt.GridLayout(0, 2));
 
-        statsRevivedLabel.setText("Revived Cells:");
+        statsRevivedLabel.setText("   Revived Cells:");
         statisticsPanel.add(statsRevivedLabel);
 
         statsRevivedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statsRevivedValue.setText("0");
         statisticsPanel.add(statsRevivedValue);
 
-        statsKilledLabel.setText("Killed Cells:");
+        statsKilledLabel.setText("   Killed Cells:");
         statisticsPanel.add(statsKilledLabel);
 
         statsKilledValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statsKilledValue.setText("0");
         statisticsPanel.add(statsKilledValue);
 
+        statsGenerationsLabel.setText("   Generations:");
+        statisticsPanel.add(statsGenerationsLabel);
+
+        statsGenerationsValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        statsGenerationsValue.setText("0");
+        statisticsPanel.add(statsGenerationsValue);
+
         rightPanel.add(statisticsPanel);
+
+        speedSlider.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        speedSlider.setForeground(java.awt.Color.lightGray);
+        speedSlider.setMajorTickSpacing(500);
+        speedSlider.setMaximum(2250);
+        speedSlider.setMinimum(250);
+        speedSlider.setMinorTickSpacing(250);
+        speedSlider.setPaintLabels(true);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.setValue(1250);
+        speedSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Next Gen. Building Time (ms)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
+        speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedSliderStateChanged(evt);
+            }
+        });
+        rightPanel.add(speedSlider);
 
         getContentPane().add(rightPanel, java.awt.BorderLayout.EAST);
 
         bottomPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 15, 15, 15));
+        bottomPanel.setAlignmentX(1.0F);
+        bottomPanel.setAlignmentY(0.5F);
         bottomPanel.setLayout(new javax.swing.BoxLayout(bottomPanel, javax.swing.BoxLayout.X_AXIS));
 
         prevButton.setText("<< Prev.");
+        prevButton.setEnabled(false);
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevButtonActionPerformed(evt);
@@ -187,8 +220,20 @@ public class GameViewSwing extends JFrame implements GameView {
         bottomPanel.add(nextButton);
 
         clearButton.setText("Clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
         bottomPanel.add(clearButton);
-        bottomPanel.add(speedSlider);
+
+        resetButton.setText("Reset");
+        resetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetButtonActionPerformed(evt);
+            }
+        });
+        bottomPanel.add(resetButton);
 
         getContentPane().add(bottomPanel, java.awt.BorderLayout.SOUTH);
 
@@ -203,7 +248,7 @@ public class GameViewSwing extends JFrame implements GameView {
         }
         else {
             playButton.setText("Play >");
-             controller.stop();
+             controller.halt();
         }
     }//GEN-LAST:event_playButtonActionPerformed
 
@@ -215,6 +260,20 @@ public class GameViewSwing extends JFrame implements GameView {
         controller.nextGeneration();
     }//GEN-LAST:event_nextButtonActionPerformed
 
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        playButton.setText("Play >");
+        controller.killAllCells();
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
+        controller.setDelayTime(speedSlider.getValue());
+    }//GEN-LAST:event_speedSliderStateChanged
+
+    private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
+        clearButtonActionPerformed(evt);
+        controller.reset();
+    }//GEN-LAST:event_resetButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JButton clearButton;
@@ -222,9 +281,12 @@ public class GameViewSwing extends JFrame implements GameView {
     private javax.swing.JButton nextButton;
     private javax.swing.JButton playButton;
     private javax.swing.JButton prevButton;
+    private javax.swing.JButton resetButton;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JPanel statisticsPanel;
+    private javax.swing.JLabel statsGenerationsLabel;
+    private javax.swing.JLabel statsGenerationsValue;
     private javax.swing.JLabel statsKilledLabel;
     private javax.swing.JLabel statsKilledValue;
     private javax.swing.JLabel statsRevivedLabel;
