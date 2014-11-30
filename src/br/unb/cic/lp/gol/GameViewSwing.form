@@ -32,7 +32,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="GridBagConstraints gbc = new GridBagConstraints();&#xa;for (int row = 0; row &lt; Main.GRID_HEIGHT; row++) {&#xa;    for (int col = 0; col &lt; Main.GRID_WIDTH; col++) {&#xa;        gbc.gridx = col;&#xa;        gbc.gridy = row;&#xa;        gridPanel.add(new GridCell(col, row), gbc);&#xa;    }&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="GridBagConstraints gbc = new GridBagConstraints();&#xa;for (int row = 0; row &lt; Main.GRID_HEIGHT; row++) {&#xa;    for (int col = 0; col &lt; Main.GRID_WIDTH; col++) {&#xa;        gbc.gridx = col;&#xa;        gbc.gridy = row;&#xa;        gridPanel.add(new GridCell(row, col), gbc);&#xa;    }&#xa;}"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -177,7 +177,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="playButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Play"/>
+            <Property name="text" type="java.lang.String" value="Play &gt;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playButtonActionPerformed"/>
@@ -187,6 +187,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Next &gt;&gt;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="clearButton">
           <Properties>

@@ -1,6 +1,7 @@
 package br.unb.cic.lp.gol;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,9 +15,10 @@ import javax.swing.border.LineBorder;
  * 
  * @author zidenis
  */
-public class GameViewSwing extends JFrame {
+public class GameViewSwing extends JFrame implements GameView {
 
-    private final Color ONOVER_BACKGROUND = Color.CYAN;
+    private final Color ONOVER_COLOR = Color.CYAN;
+    private final Color ALIVE_COLOR = Color.RED;
 
     private final GameEngine engine;
     private final GameController controller;
@@ -25,24 +27,40 @@ public class GameViewSwing extends JFrame {
         this.engine = engine;
         this.controller = controller;
         initComponents();
+        setVisible(true);
+    }
+
+    @Override
+    public void update() {
+        for (Component c :gridPanel.getComponents()) {
+            GridCell cell = (GridCell) c;
+            if (engine.isCellAlive(cell.numLine, cell.numCol)) {
+                cell.setAlive();
+            } else {
+                cell.setDead();
+            }
+        }
     }
 
     public class GridCell extends JPanel {
 
+        private final Color DEFAULT_BACKGROUND;
         private Color background;
-        private final int x;
-        private final int y;
+        private final int numLine;
+        private final int numCol;
 
-        public GridCell(int col, int line) {
+
+        public GridCell(int line, int col) {
             setBorder(new LineBorder(Color.LIGHT_GRAY));
             background = getBackground();
-            x = col;
-            y = line;
-
+            DEFAULT_BACKGROUND = background;
+            numLine = line;
+            numCol = col;
+            
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    setBackground(ONOVER_BACKGROUND);
+                    setBackground(ONOVER_COLOR);
                 }
 
                 @Override
@@ -52,11 +70,22 @@ public class GameViewSwing extends JFrame {
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                System.out.println("Cell: " + x + "," + y);
-                    controller.makeCellAlive(x, y);
+                System.out.println("Cell: " + numLine + "," + numCol);
+                    controller.makeCellAlive(numLine, numCol);
                 }
             });
+        }   
+
+        public void setAlive() {
+            background = ALIVE_COLOR;
+            setBackground(background);
         }
+
+        private void setDead() {
+            background = DEFAULT_BACKGROUND;
+            setBackground(background);
+        }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -89,7 +118,7 @@ public class GameViewSwing extends JFrame {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 gbc.gridx = col;
                 gbc.gridy = row;
-                gridPanel.add(new GridCell(col, row), gbc);
+                gridPanel.add(new GridCell(row, col), gbc);
             }
         }
 
@@ -141,7 +170,7 @@ public class GameViewSwing extends JFrame {
         });
         bottomPanel.add(prevButton);
 
-        playButton.setText("Play");
+        playButton.setText("Play >");
         playButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playButtonActionPerformed(evt);
@@ -150,6 +179,11 @@ public class GameViewSwing extends JFrame {
         bottomPanel.add(playButton);
 
         nextButton.setText("Next >>");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
         bottomPanel.add(nextButton);
 
         clearButton.setText("Clear");
@@ -162,12 +196,24 @@ public class GameViewSwing extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        // TODO add your handling code here:
+        String label = playButton.getText();
+        if (label.equals("Play >")) {
+            playButton.setText("Pause ");
+            controller.start();
+        }
+        else {
+            playButton.setText("Play >");
+             controller.stop();
+        }
     }//GEN-LAST:event_playButtonActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_prevButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        controller.nextGeneration();
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
