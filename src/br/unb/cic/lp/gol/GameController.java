@@ -55,6 +55,15 @@ public class GameController {
         view.update();
         runningTest();
     }
+    
+    public void previousGeneration() {
+        engine.restorePreviousGeneraion();
+        view.update();
+    }
+    
+    public int numOfSavedGenerations() {
+        return engine.getNumSavedStates();
+    }
 
     private void runningTest() {
         if (running) {
@@ -70,9 +79,9 @@ public class GameController {
         }
     }
 
-    public void makeCellAlive(int line, int col) {
+    public void createCell(int line, int col) {
         try {
-            engine.makeCellAlive(line, col);
+            engine.createCell(line, col);
             view.update();
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());

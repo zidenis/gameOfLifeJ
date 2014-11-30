@@ -84,7 +84,7 @@ public class GameViewConsole implements GameView {
 			j = s.nextInt();
 		}while(!validPosition(i,j));
 		
-		controller.makeCellAlive(i, j);
+		controller.createCell(i, j);
 	}
 	
 	private void nextGeneration() {

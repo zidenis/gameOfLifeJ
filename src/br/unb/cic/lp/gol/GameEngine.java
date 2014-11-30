@@ -18,13 +18,15 @@ import java.util.List;
  * @author rbonifacio (v1)
  * @author zidenis (v2)
  */
-
 public class GameEngine {
+
+    private final int MAX_SAVED_SATES = 10;
 
     private int height;
     private int width;
-    private Cell[][] cells;
-    private Statistics statistics;
+
+    private Memento activeState;
+    private List<Memento> savedStates;
 
     /**
      * Construtor da classe Environment.
@@ -35,19 +37,34 @@ public class GameEngine {
     public GameEngine(int height, int width, Statistics statistics) {
         this.height = height;
         this.width = width;
-        cells = new Cell[height][width];
+        savedStates = new ArrayList<Memento>();
+        activeState = new Memento(new Cell[height][width], statistics);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                cells[i][j] = new Cell();
+                activeState.getCells()[i][j] = new Cell();
             }
         }
-        this.statistics = statistics;
+    }
+
+    private void addState(Memento state) {
+        if (savedStates.size() > MAX_SAVED_SATES) {
+            savedStates.remove(0);
+        }
+        savedStates.add(state);
+    }
+
+    public void restorePreviousGeneraion() {
+        activeState = savedStates.remove(savedStates.size() - 1);
+    }
+
+    public int getNumSavedStates() {
+        return savedStates.size();
     }
 
     public Statistics getStatistics() {
-        return statistics;
+        return activeState.getStatistics();
     }
-    
+
     /**
      * Calcula uma nova geracao do ambiente. Essa implementacao utiliza o
      * algoritmo do Conway, ou seja:
@@ -61,27 +78,29 @@ public class GameEngine {
      * c) em todos os outros casos a celula morre ou continua morta.
      */
     public void nextGeneration() {
-        List<Cell> mustRevive = new ArrayList<Cell>();
+        addState(activeState); // Adiciona estado atual na lista de estados salvos
+        activeState = activeState.duplicate();
+
+        List<Cell> mustGenerate = new ArrayList<Cell>();
         List<Cell> mustKill = new ArrayList<Cell>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (shouldRevive(i, j)) {
-                    mustRevive.add(cells[i][j]);
-                } else if ((!shouldKeepAlive(i, j)) && cells[i][j].isAlive()) {
-                    mustKill.add(cells[i][j]);
+                    mustGenerate.add(activeState.getCells()[i][j]);
+                } else if ((!shouldKeepAlive(i, j)) && activeState.getCells()[i][j].isAlive()) {
+                    mustKill.add(activeState.getCells()[i][j]);
                 }
             }
         }
-
-        for (Cell cell : mustRevive) {
-            cell.revive();
-            statistics.recordRevive();
+        for (Cell cell : mustGenerate) {
+            cell.rise();
+            activeState.getStatistics().incGeneratedCells();
         }
         for (Cell cell : mustKill) {
             cell.kill();
-            statistics.recordKill();
+            activeState.getStatistics().incKilledCells();
         }
-        statistics.incNumOfGenerations();
+        activeState.getStatistics().incNumOfGenerations();
     }
 
     /**
@@ -92,10 +111,19 @@ public class GameEngine {
      *
      * @throws InvalidParameterException caso a posicao (i, j) nao seja valida.
      */
-    public void makeCellAlive(int i, int j) throws InvalidParameterException {
+    private void generateCell(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
-            cells[i][j].revive();
-            statistics.recordRevive();
+            activeState.getCells()[i][j].rise();
+            activeState.getStatistics().incGeneratedCells();
+        } else {
+            new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
+        }
+    }
+
+    public void createCell(int i, int j) throws InvalidParameterException {
+        if (validPosition(i, j)) {
+            activeState.getCells()[i][j].rise();
+            activeState.getStatistics().incCreatedCells();
         } else {
             new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
@@ -112,7 +140,7 @@ public class GameEngine {
      */
     public boolean isCellAlive(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
-            return cells[i][j].isAlive();
+            return activeState.getCells()[i][j].isAlive();
         } else {
             throw new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
@@ -126,26 +154,18 @@ public class GameEngine {
      * @return numero de celulas vivas.
      */
     public int numberOfAliveCells() {
-        int aliveCells = 0;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (isCellAlive(i, j)) {
-                    aliveCells++;
-                }
-            }
-        }
-        return aliveCells;
+        return activeState.getStatistics().getAlivedCells();
     }
 
     /* verifica se uma celula deve ser mantida viva */
     private boolean shouldKeepAlive(int i, int j) {
-        return (cells[i][j].isAlive())
+        return (activeState.getCells()[i][j].isAlive())
                 && (numberOfNeighborhoodAliveCells(i, j) == 2 || numberOfNeighborhoodAliveCells(i, j) == 3);
     }
 
     /* verifica se uma celula deve (re)nascer */
     private boolean shouldRevive(int i, int j) {
-        return (!cells[i][j].isAlive())
+        return (!activeState.getCells()[i][j].isAlive())
                 && (numberOfNeighborhoodAliveCells(i, j) == 3);
     }
 
@@ -157,7 +177,7 @@ public class GameEngine {
         int alive = 0;
         for (int a = i - 1; a <= i + 1; a++) {
             for (int b = j - 1; b <= j + 1; b++) {
-                if (validPosition(a, b) && (!(a == i && b == j)) && cells[a][b].isAlive()) {
+                if (validPosition(a, b) && (!(a == i && b == j)) && activeState.getCells()[a][b].isAlive()) {
                     alive++;
                 }
             }
@@ -172,12 +192,10 @@ public class GameEngine {
         return a >= 0 && a < height && b >= 0 && b < width;
     }
 
-
-    
     public void killCell(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
-            cells[i][j].kill();
-            statistics.recordKill();
+            activeState.getCells()[i][j].kill();
+            activeState.getStatistics().incKilledCells();
         } else {
             throw new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
@@ -187,15 +205,15 @@ public class GameEngine {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (isCellAlive(i, j)) {
-                    cells[i][j].kill();
-                    statistics.recordKill();
+                    activeState.getCells()[i][j].kill();
+                    activeState.getStatistics().incKilledCells();
                 }
             }
         }
     }
-    
+
     public void reset() {
         killAllCells();
-        statistics = new Statistics();
+        activeState.setStatistics(new Statistics());
     }
 }
