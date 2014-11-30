@@ -11,7 +11,13 @@ public class Cell {
 		this.alive = false;
 	}
 	
-	public void revive() {
+	public void rise() {
 		this.alive = true;
 	}
+        
+        public Cell duplicate() {
+            Cell newCell = new Cell();
+            newCell.alive = this.alive;
+            return newCell;
+        }
 }
