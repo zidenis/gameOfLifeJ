@@ -6,7 +6,9 @@ package br.unb.cic.lp.gol;
  *
  * Nao eh uma boa implementacao.
  *
- * @author rodrigobonifacio
+ * @version 2.0
+ * @author rbonifacio (v1)
+ * @author zidenis (v2)
  */
 public class Statistics {
 
@@ -46,14 +48,4 @@ public class Statistics {
     public int getNumOfGenerations() {
         return generations;
     }
-
-    public void display() {
-        System.out.println("=================================");
-        System.out.println("           Statistics            ");
-        System.out.println("=================================");
-        System.out.println("Revived cells: " + revivedCells);
-        System.out.println("Killed cells: " + killedCells);
-        System.out.println("=================================");
-    }
-
 }

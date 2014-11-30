@@ -11,8 +11,9 @@ import javax.swing.border.LineBorder;
 
 /**
  * Atua como um componente de apresentacao (view), exibindo o estado atual do
- * game com uma implementacao baseada em caracteres ASCII.
+ * game com uma implementacao baseada em caracteres Java Swing GUI.
  * 
+ * @version 1.0
  * @author zidenis
  */
 public class GameViewSwing extends JFrame implements GameView {
@@ -32,7 +33,7 @@ public class GameViewSwing extends JFrame implements GameView {
     @Override
     public void update() {
         statistics = controller.getStatistics();
-        statsRevivedValue.setText(String.valueOf(statistics.getRevivedCells()));
+        statsAlivedValue.setText(String.valueOf(statistics.getRevivedCells()));
         statsKilledValue.setText(String.valueOf(statistics.getKilledCells()));
         statsGenerationsValue.setText(String.valueOf(statistics.getNumOfGenerations()));
         for (Component c :gridPanel.getComponents()) {
@@ -99,8 +100,8 @@ public class GameViewSwing extends JFrame implements GameView {
         strategiesPane = new javax.swing.JScrollPane();
         strategiesList = new javax.swing.JList();
         statisticsPanel = new javax.swing.JPanel();
-        statsRevivedLabel = new javax.swing.JLabel();
-        statsRevivedValue = new javax.swing.JLabel();
+        statsAlivedLabel = new javax.swing.JLabel();
+        statsAlivedValue = new javax.swing.JLabel();
         statsKilledLabel = new javax.swing.JLabel();
         statsKilledValue = new javax.swing.JLabel();
         statsGenerationsLabel = new javax.swing.JLabel();
@@ -146,12 +147,12 @@ public class GameViewSwing extends JFrame implements GameView {
         statisticsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
         statisticsPanel.setLayout(new java.awt.GridLayout(0, 2));
 
-        statsRevivedLabel.setText("   Revived Cells:");
-        statisticsPanel.add(statsRevivedLabel);
+        statsAlivedLabel.setText("   Alived Cells:");
+        statisticsPanel.add(statsAlivedLabel);
 
-        statsRevivedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        statsRevivedValue.setText("0");
-        statisticsPanel.add(statsRevivedValue);
+        statsAlivedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        statsAlivedValue.setText("0");
+        statisticsPanel.add(statsAlivedValue);
 
         statsKilledLabel.setText("   Killed Cells:");
         statisticsPanel.add(statsKilledLabel);
@@ -285,12 +286,12 @@ public class GameViewSwing extends JFrame implements GameView {
     private javax.swing.JPanel rightPanel;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JPanel statisticsPanel;
+    private javax.swing.JLabel statsAlivedLabel;
+    private javax.swing.JLabel statsAlivedValue;
     private javax.swing.JLabel statsGenerationsLabel;
     private javax.swing.JLabel statsGenerationsValue;
     private javax.swing.JLabel statsKilledLabel;
     private javax.swing.JLabel statsKilledValue;
-    private javax.swing.JLabel statsRevivedLabel;
-    private javax.swing.JLabel statsRevivedValue;
     private javax.swing.JList strategiesList;
     private javax.swing.JScrollPane strategiesPane;
     // End of variables declaration//GEN-END:variables

@@ -5,8 +5,9 @@ import java.util.Scanner;
 /**
  * Atua como um componente de apresentacao (view), exibindo o estado atual do
  * game com uma implementacao baseada em caracteres ASCII.
- * 
- * @author rbonifacio
+ * @version 2.0
+ * @author rbonifacio (v1)
+ * @author zidenis (v2)
  */
 public class GameViewConsole implements GameView {
 	private static final String LINE = "+-----+";
@@ -36,9 +37,9 @@ public class GameViewConsole implements GameView {
 	public void update() {
 		printFirstRow();
 		printLine();
-		for (int i = 0; i < engine.getHeight(); i++) {
-			for (int j = 0; j < engine.getWidth(); j++) {
-				System.out.print(engine.isCellAlive(i, j) ? ALIVE_CELL : DEAD_CELL);
+		for (int i = 0; i < Main.GRID_HEIGHT; i++) {
+			for (int j = 0; j < Main.GRID_WIDTH; j++) {
+				System.out.print(controller.isCellAlive(i, j) ? ALIVE_CELL : DEAD_CELL);
 			}
 			System.out.println("   " + i);
 			printLine();
@@ -74,11 +75,11 @@ public class GameViewConsole implements GameView {
 		Scanner s = new Scanner(System.in);
 		
 		do {
-			System.out.print("\n Inform the row number (0 - " + engine.getHeight() + "): " );
+			System.out.print("\n Inform the row number (0 - " + Main.GRID_HEIGHT + "): " );
 			
 			i = s.nextInt();
 			
-			System.out.print("\n Inform the column number (0 - " + engine.getWidth() + "): " );
+			System.out.print("\n Inform the column number (0 - " + Main.GRID_WIDTH + "): " );
 			
 			j = s.nextInt();
 		}while(!validPosition(i,j));
@@ -97,7 +98,7 @@ public class GameViewConsole implements GameView {
 	private boolean validPosition(int i, int j) {
 		System.out.println(i);
 		System.out.println(j);
-		return i >= 0 && i < engine.getHeight() && j >= 0 && j < engine.getWidth();
+		return i >= 0 && i < Main.GRID_HEIGHT && j >= 0 && j < Main.GRID_WIDTH;
 	}
 
 	private int parseOption(String option) {
@@ -115,7 +116,7 @@ public class GameViewConsole implements GameView {
 
 	/* Imprime uma linha usada como separador das linhas do tabuleiro */
 	private void printLine() {
-		for (int j = 0; j < engine.getWidth(); j++) {
+		for (int j = 0; j < Main.GRID_WIDTH; j++) {
 			System.out.print(LINE);
 		}
 		System.out.print("\n");
@@ -126,7 +127,7 @@ public class GameViewConsole implements GameView {
 	 */
 	private void printFirstRow() {
 		System.out.println("\n \n");
-		for (int j = 0; j < engine.getWidth(); j++) {
+		for (int j = 0; j < Main.GRID_WIDTH; j++) {
 			System.out.print("   " + j + "   ");
 		}
 		System.out.print("\n");

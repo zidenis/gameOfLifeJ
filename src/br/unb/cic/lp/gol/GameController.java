@@ -8,7 +8,9 @@ import java.util.TimerTask;
  * Classe que atua como um controlador do padrao MVC, separando os componentes
  * da camada de apresentacao e model.
  *
- * @author rbonifacio
+ * @version 2.0
+ * @author rbonifacio (v1)
+ * @author zidenis (v2)
  */
 public class GameController {
 
@@ -17,13 +19,9 @@ public class GameController {
 
     private boolean running;
     private int delayTime = 1000;
-    
+
     public void initController() {
         this.engine = new GameEngine(Main.GRID_HEIGHT, Main.GRID_WIDTH, new Statistics());
-    }
-
-    public GameEngine getEngine() {
-        return engine;
     }
 
     public void setBoard(GameView board) {
@@ -34,9 +32,8 @@ public class GameController {
         return engine.getStatistics();
     }
     
-    public void reset() {
-        engine.reset();
-        board.update();
+    public void setDelayTime(int delayTime) {
+        this.delayTime = delayTime;
     }
 
     public void start() {
@@ -48,13 +45,9 @@ public class GameController {
         running = false;
     }
 
-    public void makeCellAlive(int line, int col) {
-        try {
-            engine.makeCellAlive(line, col);
-            board.update();
-        } catch (InvalidParameterException e) {
-            System.out.println(e.getMessage());
-        }
+    public void reset() {
+        engine.reset();
+        board.update();
     }
 
     public void nextGeneration() {
@@ -77,23 +70,27 @@ public class GameController {
         }
     }
 
-    public void setDelayTime(int delayTime) {
-        this.delayTime = delayTime;
+    public void makeCellAlive(int line, int col) {
+        try {
+            engine.makeCellAlive(line, col);
+            board.update();
+        } catch (InvalidParameterException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public boolean isCellAlive(int lin, int col) {
         return engine.isCellAlive(lin, col);
     }
-    
+
+    public void killCell(int lin, int col) {
+        engine.killCell(lin, col);
+        board.update();
+    }
+
     public void killAllCells() {
         engine.killAllCells();
         halt();
         board.update();
     }
-    
-    public void killCell(int lin, int col) {
-        engine.killCell(lin, col);
-        board.update();
-    }
-    
 }

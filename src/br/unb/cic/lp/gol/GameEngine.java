@@ -14,8 +14,11 @@ import java.util.List;
  * Um ambiente eh representado como um array bidimensional de celulas, com
  * altura (height) e comprimento (width).
  *
- * @author rbonifacio
+ * @version 2.0
+ * @author rbonifacio (v1)
+ * @author zidenis (v2)
  */
+
 public class GameEngine {
 
     private int height;
@@ -32,15 +35,12 @@ public class GameEngine {
     public GameEngine(int height, int width, Statistics statistics) {
         this.height = height;
         this.width = width;
-
         cells = new Cell[height][width];
-
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 cells[i][j] = new Cell();
             }
         }
-
         this.statistics = statistics;
     }
 
@@ -172,22 +172,7 @@ public class GameEngine {
         return a >= 0 && a < height && b >= 0 && b < width;
     }
 
-    /* Metodos de acesso as propriedades height e width */
-    public int getHeight() {
-        return height;
-    }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
     
     public void killCell(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
