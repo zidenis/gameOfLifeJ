@@ -12,40 +12,64 @@ package br.unb.cic.lp.gol;
  */
 public class Statistics {
 
-    private int revivedCells;
+    private int createdCells;
+    private int generatedCells;
     private int killedCells;
-    private int generations;
+    private int alivedCells;
+    private int numOfGenerations;
 
     public Statistics() {
-        revivedCells = 0;
+        createdCells = 0;
+        generatedCells = 0;
         killedCells = 0;
-        generations = 0;
+        alivedCells = 0;
+        numOfGenerations = 0;
     }
 
-    public int getRevivedCells() {
-        return revivedCells;
+    public Statistics(int createdCells, int generatedCells, int killedCells, int alivedCells, int generations) {
+        this.createdCells = createdCells;
+        this.generatedCells = generatedCells;
+        this.killedCells = killedCells;
+        this.alivedCells = alivedCells;
+        this.numOfGenerations = generations;
     }
 
-    public void recordRevive() {
-        this.revivedCells++;
+    public int getCreatedCells() {
+        return createdCells;
+    }
+
+    public void incCreatedCells() {
+        createdCells++;
+        alivedCells++;
+    }
+    
+    public int getGeneratedCells() {
+        return generatedCells;
+    }
+
+    public void incGeneratedCells() {
+        generatedCells++;
+        alivedCells++;
     }
 
     public int getKilledCells() {
         return killedCells;
     }
 
-    public void recordKill() {
-        this.killedCells++;
+    public void incKilledCells() {
+        killedCells++;
+        alivedCells--;
     }
 
-    public void incNumOfGenerations() {
-        generations++;
-    }
-    public void resetNumOfGenerations() {
-        this.generations = 0;
+    public int getAlivedCells() {
+        return alivedCells;
     }
 
     public int getNumOfGenerations() {
-        return generations;
+        return numOfGenerations;
+    }
+    
+    public void incNumOfGenerations() {
+        numOfGenerations++;
     }
 }

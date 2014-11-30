@@ -125,12 +125,23 @@
             <Property name="rows" type="int" value="0"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="statsAlivedLabel">
+            <Component class="javax.swing.JLabel" name="statsCreatedLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="   Alived Cells:"/>
+                <Property name="text" type="java.lang.String" value="   Created Cells:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="statsAlivedValue">
+            <Component class="javax.swing.JLabel" name="statsCreatedValue">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="statsGeneratedLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="   Generated Cells:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="statsGeneratedValue">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="0"/>
@@ -142,6 +153,17 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="statsKilledValue">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="statsAlivedLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="   Alived Cells:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="statsAlivedValue">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="0"/>

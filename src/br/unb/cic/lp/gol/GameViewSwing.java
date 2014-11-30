@@ -22,7 +22,7 @@ public class GameViewSwing extends JFrame implements GameView {
     private final Color ALIVE_COLOR = Color.RED;
 
     private final GameController controller;
-    private Statistics statistics;
+    private Statistics stats;
 
     public GameViewSwing(GameController controller) {
         this.controller = controller;
@@ -32,10 +32,12 @@ public class GameViewSwing extends JFrame implements GameView {
 
     @Override
     public void update() {
-        statistics = controller.getStatistics();
-        statsAlivedValue.setText(String.valueOf(statistics.getRevivedCells()));
-        statsKilledValue.setText(String.valueOf(statistics.getKilledCells()));
-        statsGenerationsValue.setText(String.valueOf(statistics.getNumOfGenerations()));
+        stats = controller.getStatistics();
+        statsCreatedValue.setText(String.valueOf(stats.getCreatedCells()));
+        statsGeneratedValue.setText(String.valueOf(stats.getGeneratedCells()));
+        statsKilledValue.setText(String.valueOf(stats.getKilledCells()));
+        statsAlivedValue.setText(String.valueOf(stats.getAlivedCells()));
+        statsGenerationsValue.setText(String.valueOf(stats.getNumOfGenerations()));
         for (Component c :gridPanel.getComponents()) {
             GridCell cell = (GridCell) c;
             if (controller.isCellAlive(cell.numLine, cell.numCol)) {
@@ -43,6 +45,11 @@ public class GameViewSwing extends JFrame implements GameView {
             } else {
                 cell.setDead();
             }
+        }
+        if (controller.numOfSavedGenerations() > 0) {
+            prevButton.setEnabled(true);
+        } else {
+            prevButton.setEnabled(false);
         }
     }
 
@@ -73,7 +80,7 @@ public class GameViewSwing extends JFrame implements GameView {
                     if (controller.isCellAlive(numLine, numCol)) {
                         controller.killCell(numLine, numCol);
                     } else {
-                        controller.makeCellAlive(numLine, numCol);
+                        controller.createCell(numLine, numCol);
                     }
                 }
             });
@@ -100,10 +107,14 @@ public class GameViewSwing extends JFrame implements GameView {
         strategiesPane = new javax.swing.JScrollPane();
         strategiesList = new javax.swing.JList();
         statisticsPanel = new javax.swing.JPanel();
-        statsAlivedLabel = new javax.swing.JLabel();
-        statsAlivedValue = new javax.swing.JLabel();
+        statsCreatedLabel = new javax.swing.JLabel();
+        statsCreatedValue = new javax.swing.JLabel();
+        statsGeneratedLabel = new javax.swing.JLabel();
+        statsGeneratedValue = new javax.swing.JLabel();
         statsKilledLabel = new javax.swing.JLabel();
         statsKilledValue = new javax.swing.JLabel();
+        statsAlivedLabel = new javax.swing.JLabel();
+        statsAlivedValue = new javax.swing.JLabel();
         statsGenerationsLabel = new javax.swing.JLabel();
         statsGenerationsValue = new javax.swing.JLabel();
         speedSlider = new javax.swing.JSlider();
@@ -147,12 +158,19 @@ public class GameViewSwing extends JFrame implements GameView {
         statisticsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Statistics", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
         statisticsPanel.setLayout(new java.awt.GridLayout(0, 2));
 
-        statsAlivedLabel.setText("   Alived Cells:");
-        statisticsPanel.add(statsAlivedLabel);
+        statsCreatedLabel.setText("   Created Cells:");
+        statisticsPanel.add(statsCreatedLabel);
 
-        statsAlivedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        statsAlivedValue.setText("0");
-        statisticsPanel.add(statsAlivedValue);
+        statsCreatedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        statsCreatedValue.setText("0");
+        statisticsPanel.add(statsCreatedValue);
+
+        statsGeneratedLabel.setText("   Generated Cells:");
+        statisticsPanel.add(statsGeneratedLabel);
+
+        statsGeneratedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        statsGeneratedValue.setText("0");
+        statisticsPanel.add(statsGeneratedValue);
 
         statsKilledLabel.setText("   Killed Cells:");
         statisticsPanel.add(statsKilledLabel);
@@ -160,6 +178,13 @@ public class GameViewSwing extends JFrame implements GameView {
         statsKilledValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statsKilledValue.setText("0");
         statisticsPanel.add(statsKilledValue);
+
+        statsAlivedLabel.setText("   Alived Cells:");
+        statisticsPanel.add(statsAlivedLabel);
+
+        statsAlivedValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        statsAlivedValue.setText("0");
+        statisticsPanel.add(statsAlivedValue);
 
         statsGenerationsLabel.setText("   Generations:");
         statisticsPanel.add(statsGenerationsLabel);
@@ -254,7 +279,7 @@ public class GameViewSwing extends JFrame implements GameView {
     }//GEN-LAST:event_playButtonActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
-        // TODO add your handling code here:
+        controller.previousGeneration();
     }//GEN-LAST:event_prevButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
@@ -288,6 +313,10 @@ public class GameViewSwing extends JFrame implements GameView {
     private javax.swing.JPanel statisticsPanel;
     private javax.swing.JLabel statsAlivedLabel;
     private javax.swing.JLabel statsAlivedValue;
+    private javax.swing.JLabel statsCreatedLabel;
+    private javax.swing.JLabel statsCreatedValue;
+    private javax.swing.JLabel statsGeneratedLabel;
+    private javax.swing.JLabel statsGeneratedValue;
     private javax.swing.JLabel statsGenerationsLabel;
     private javax.swing.JLabel statsGenerationsValue;
     private javax.swing.JLabel statsKilledLabel;
