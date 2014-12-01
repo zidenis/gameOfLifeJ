@@ -27,6 +27,7 @@ public class GameEngine {
 
     private Memento activeState;
     private List<Memento> savedStates;
+    private GameRule rule;
 
     /**
      * Construtor da classe Environment.
@@ -44,6 +45,7 @@ public class GameEngine {
                 activeState.getCells()[i][j] = new Cell();
             }
         }
+        rule = new GameRule("Conway's Life", new int[] {2, 3}, new int[] {3});
     }
 
     private void addState(Memento state) {
@@ -65,6 +67,18 @@ public class GameEngine {
         return activeState.getStatistics();
     }
 
+    public void setStrategy(GameRule strategy) {
+        this.rule = strategy;
+    }
+
+    public GameRule getStrategy() {
+        return rule;
+    }
+
+    public Memento getActiveState() {
+        return activeState;
+    }
+
     /**
      * Calcula uma nova geracao do ambiente. Essa implementacao utiliza o
      * algoritmo do Conway, ou seja:
@@ -80,14 +94,15 @@ public class GameEngine {
     public void nextGeneration() {
         addState(activeState); // Adiciona estado atual na lista de estados salvos
         activeState = activeState.duplicate();
-
         List<Cell> mustGenerate = new ArrayList<Cell>();
         List<Cell> mustKill = new ArrayList<Cell>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (shouldRevive(i, j)) {
-                    mustGenerate.add(activeState.getCells()[i][j]);
-                } else if ((!shouldKeepAlive(i, j)) && activeState.getCells()[i][j].isAlive()) {
+                if (!activeState.getCells()[i][j].isAlive()) {
+                    if (rule.shouldRevive(numberOfNeighborhoodAliveCells(i, j))) {
+                        mustGenerate.add(activeState.getCells()[i][j]);
+                    }
+                } else if (!rule.shouldKeepAlive(numberOfNeighborhoodAliveCells(i, j))) {
                     mustKill.add(activeState.getCells()[i][j]);
                 }
             }
@@ -157,18 +172,6 @@ public class GameEngine {
         return activeState.getStatistics().getAlivedCells();
     }
 
-    /* verifica se uma celula deve ser mantida viva */
-    private boolean shouldKeepAlive(int i, int j) {
-        return (activeState.getCells()[i][j].isAlive())
-                && (numberOfNeighborhoodAliveCells(i, j) == 2 || numberOfNeighborhoodAliveCells(i, j) == 3);
-    }
-
-    /* verifica se uma celula deve (re)nascer */
-    private boolean shouldRevive(int i, int j) {
-        return (!activeState.getCells()[i][j].isAlive())
-                && (numberOfNeighborhoodAliveCells(i, j) == 3);
-    }
-
     /*
      * Computa o numero de celulas vizinhas vivas, dada uma posicao no ambiente
      * de referencia identificada pelos argumentos (i,j).
@@ -205,8 +208,7 @@ public class GameEngine {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (isCellAlive(i, j)) {
-                    activeState.getCells()[i][j].kill();
-                    activeState.getStatistics().incKilledCells();
+                    killCell(i, j);
                 }
             }
         }
