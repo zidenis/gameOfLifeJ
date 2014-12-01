@@ -7,7 +7,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * Atua como um componente de apresentacao (view), exibindo o estado atual do
@@ -24,9 +28,37 @@ public class GameViewSwing extends JFrame implements GameView {
     private final GameController controller;
     private Statistics stats;
 
-    public GameViewSwing(GameController controller) {
-        this.controller = controller;
+    public GameViewSwing(GameController gameController) {
+        controller = gameController;
         initComponents();
+        
+        strategiesList.setModel(new ListModel() {
+            @Override
+            public int getSize() {
+                return controller.getRules().getGameRuleList().size();
+            }
+
+            @Override
+            public Object getElementAt(int index) {
+                return controller.getRules().getRuleAt(index);
+            }
+
+            @Override
+            public void addListDataListener(ListDataListener l) {
+            }
+
+            @Override
+            public void removeListDataListener(ListDataListener l) {
+            }
+        });
+        strategiesList.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                controller.setActiveRule(strategiesList.getSelectedIndex());
+            }
+        });
+        
         setVisible(true);
     }
 
@@ -151,6 +183,7 @@ public class GameViewSwing extends JFrame implements GameView {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        strategiesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         strategiesPane.setViewportView(strategiesList);
 
         rightPanel.add(strategiesPane);

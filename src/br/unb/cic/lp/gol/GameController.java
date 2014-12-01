@@ -102,4 +102,17 @@ public class GameController {
         halt();
         view.update();
     }
+    
+    public GameRuleList getRules() {
+        return engine.getRules();
+    }
+    
+    public void setActiveRule(int index) {
+        engine.getRules().setActiveRule(index);
+        System.out.println(engine.getRules().getActiveRule() + "selected");
+    }
+    
+    public void addRule(GameRule rule) {
+        engine.getRules().addNewRule(rule);
+    }
 }

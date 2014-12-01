@@ -27,7 +27,7 @@ public class GameEngine {
 
     private Memento activeState;
     private List<Memento> savedStates;
-    private GameRule rule;
+    private GameRuleList rules;
 
     /**
      * Construtor da classe Environment.
@@ -45,7 +45,7 @@ public class GameEngine {
                 activeState.getCells()[i][j] = new Cell();
             }
         }
-        rule = new GameRule("Conway's Life", new int[] {2, 3}, new int[] {3});
+        rules = new GameRuleList();
     }
 
     private void addState(Memento state) {
@@ -67,12 +67,8 @@ public class GameEngine {
         return activeState.getStatistics();
     }
 
-    public void setStrategy(GameRule strategy) {
-        this.rule = strategy;
-    }
-
-    public GameRule getStrategy() {
-        return rule;
+    public GameRuleList getRules() {
+        return rules;
     }
 
     public Memento getActiveState() {
@@ -99,10 +95,10 @@ public class GameEngine {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (!activeState.getCells()[i][j].isAlive()) {
-                    if (rule.shouldRevive(numberOfNeighborhoodAliveCells(i, j))) {
+                    if (rules.getActiveRule().shouldRevive(numberOfNeighborhoodAliveCells(i, j))) {
                         mustGenerate.add(activeState.getCells()[i][j]);
                     }
-                } else if (!rule.shouldKeepAlive(numberOfNeighborhoodAliveCells(i, j))) {
+                } else if (!rules.getActiveRule().shouldKeepAlive(numberOfNeighborhoodAliveCells(i, j))) {
                     mustKill.add(activeState.getCells()[i][j]);
                 }
             }
