@@ -57,6 +57,10 @@ public class Statistics {
         alivedCells--;
     }
 
+    /**
+     * Retorna o numero de celulas vivas no ambiente.
+     * @return numero de celulas vivas.
+     */
     public int getAlivedCells() {
         return alivedCells;
     }

@@ -8,11 +8,11 @@ import java.util.List;
  * Representa um ambiente (environment) do jogo GameOfLife.
  *
  * Essa implementacao eh nao inifinita, ou seja, nem todas as celulas possuem
- * oito celulas vizinhas. Por exemplo, a celula de coordenada (0,0) possui
- * apenas tres celulas vizinhas, (0,1), (1,0) e (1,1).
- *
- * Um ambiente eh representado como um array bidimensional de celulas, com
- * altura (height) e comprimento (width).
+ oito celulas vizinhas. Por exemplo, nghbrLine celula de coordenada (0,0) possui
+ apenas tres celulas vizinhas, (0,1), (1,0) e (1,1).
+
+ Um ambiente eh representado como um array bidimensional de celulas, com
+ altura (height) e comprimento (width).
  *
  * @version 2.0
  * @author rbonifacio (v1)
@@ -77,15 +77,15 @@ public class GameEngine {
 
     /**
      * Calcula uma nova geracao do ambiente. Essa implementacao utiliza o
-     * algoritmo do Conway, ou seja:
-     *
-     * a) uma celula morta com exatamente tres celulas vizinhas vivas se torna
-     * uma celula viva.
-     *
-     * b) uma celula viva com duas ou tres celulas vizinhas vivas permanece
-     * viva.
-     *
-     * c) em todos os outros casos a celula morre ou continua morta.
+ algoritmo do Conway, ou seja:
+
+ nghbrLine) uma celula morta com exatamente tres celulas vizinhas vivas se torna
+ uma celula viva.
+
+ nghbrClmn) uma celula viva com duas ou tres celulas vizinhas vivas permanece
+ viva.
+
+ c) em todos os outros casos nghbrLine celula morre ou continua morta.
      */
     public void nextGeneration() {
         addState(activeState); // Adiciona estado atual na lista de estados salvos
@@ -115,12 +115,12 @@ public class GameEngine {
     }
 
     /**
-     * Torna a celula de posicao (i, j) viva
+     * Torna nghbrLine celula de posicao (i, j) viva
      *
      * @param i posicao vertical da celula
      * @param j posicao horizontal da celula
      *
-     * @throws InvalidParameterException caso a posicao (i, j) nao seja valida.
+     * @throws InvalidParameterException caso nghbrLine posicao (i, j) nao seja valida.
      */
     private void generateCell(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
@@ -145,9 +145,9 @@ public class GameEngine {
      *
      * @param i Posicao vertical da celula
      * @param j Posicao horizontal da celula
-     * @return Verdadeiro caso a celula de posicao (i,j) esteja viva.
+     * @return Verdadeiro caso nghbrLine celula de posicao (i,j) esteja viva.
      *
-     * @throws InvalidParameterException caso a posicao (i,j) nao seja valida.
+     * @throws InvalidParameterException caso nghbrLine posicao (i,j) nao seja valida.
      */
     public boolean isCellAlive(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
@@ -157,26 +157,24 @@ public class GameEngine {
         }
     }
 
-    /**
-     * Retorna o numero de celulas vivas no ambiente. Esse metodo eh
-     * particularmente util para o calculo de estatisticas e para melhorar a
-     * testabilidade.
-     *
-     * @return numero de celulas vivas.
-     */
-    public int numberOfAliveCells() {
-        return activeState.getStatistics().getAlivedCells();
-    }
-
     /*
      * Computa o numero de celulas vizinhas vivas, dada uma posicao no ambiente
-     * de referencia identificada pelos argumentos (i,j).
+     * de referencia identificada pelos argumentos (line,clmn).
      */
-    private int numberOfNeighborhoodAliveCells(int i, int j) {
+    private int numberOfNeighborhoodAliveCells(int line, int clmn) {
         int alive = 0;
-        for (int a = i - 1; a <= i + 1; a++) {
-            for (int b = j - 1; b <= j + 1; b++) {
-                if (validPosition(a, b) && (!(a == i && b == j)) && activeState.getCells()[a][b].isAlive()) {
+        for (int nghbrLine = line - 1; nghbrLine <= line + 1; nghbrLine++) {
+            for (int nghbrClmn = clmn - 1; nghbrClmn <= clmn + 1; nghbrClmn++) {
+                int i = nghbrLine;
+                int j = nghbrClmn;
+                //Infinite grid transformation
+                if (nghbrLine == -1) i = height-1;
+                else if (nghbrLine == height) i = 0;
+                if (nghbrClmn == -1) j = width-1;
+                else if (nghbrClmn == width) j = 0;
+                if (validPosition(i, j) && 
+                   (!(nghbrLine == line && nghbrClmn == clmn)) &&
+                   (activeState.getCells()[i][j].isAlive())) {
                     alive++;
                 }
             }
@@ -185,7 +183,7 @@ public class GameEngine {
     }
 
     /*
-     * Verifica se uma posicao (a, b) referencia uma celula valida no tabuleiro.
+     * Verifica se uma posicao (nghbrLine, nghbrClmn) referencia uma celula valida no tabuleiro.
      */
     private boolean validPosition(int a, int b) {
         return a >= 0 && a < height && b >= 0 && b < width;
