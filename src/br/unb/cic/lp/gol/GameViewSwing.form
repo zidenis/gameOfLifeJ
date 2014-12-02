@@ -32,7 +32,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="GridBagConstraints gbc = new GridBagConstraints();&#xa;for (int row = 0; row &lt; Main.GRID_HEIGHT; row++) {&#xa;    for (int col = 0; col &lt; Main.GRID_WIDTH; col++) {&#xa;        gbc.gridx = col;&#xa;        gbc.gridy = row;&#xa;        gridPanel.add(new GridCell(row, col), gbc);&#xa;    }&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="GridBagConstraints gbc = new GridBagConstraints();&#xa;for (int row = 0; row &lt; Main.GRID_HEIGHT; row++) {&#xa;    for (int col = 0; col &lt; Main.GRID_WIDTH; col++) {&#xa;        gbc.gridx = col;&#xa;        gbc.gridy = row;&#xa;        gridPanel.add(new GridCell(row, col, controller), gbc);&#xa;    }&#xa;}"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -67,7 +67,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Strategy">
+                <TitledBorder title="Rules">
                   <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder roundedCorners="true">
                       <Color PropertyName="color" blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
@@ -90,17 +90,14 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ee" green="ee" red="ee" type="rgb"/>
                 </Property>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                  <StringArray count="5">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                    <StringItem index="4" value="Item 5"/>
-                  </StringArray>
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new RulesListModel(controller)" type="code"/>
                 </Property>
                 <Property name="selectionMode" type="int" value="0"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="strategiesListMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -227,7 +224,6 @@
           </Border>
         </Property>
         <Property name="alignmentX" type="float" value="1.0"/>
-        <Property name="alignmentY" type="float" value="0.5"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

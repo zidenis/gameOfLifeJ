@@ -1,17 +1,8 @@
 package br.unb.cic.lp.gol;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.ListModel;
-import javax.swing.border.LineBorder;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
  * Atua como um componente de apresentacao (view), exibindo o estado atual do
@@ -22,43 +13,12 @@ import javax.swing.event.ListSelectionListener;
  */
 public class GameViewSwing extends JFrame implements GameView {
 
-    private final Color ONOVER_COLOR = Color.CYAN;
-    private final Color ALIVE_COLOR = Color.RED;
-
     private final GameController controller;
     private Statistics stats;
 
     public GameViewSwing(GameController gameController) {
         controller = gameController;
         initComponents();
-        
-        strategiesList.setModel(new ListModel() {
-            @Override
-            public int getSize() {
-                return controller.getRules().getGameRuleList().size();
-            }
-
-            @Override
-            public Object getElementAt(int index) {
-                return controller.getRules().getRuleAt(index);
-            }
-
-            @Override
-            public void addListDataListener(ListDataListener l) {
-            }
-
-            @Override
-            public void removeListDataListener(ListDataListener l) {
-            }
-        });
-        strategiesList.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                controller.setActiveRule(strategiesList.getSelectedIndex());
-            }
-        });
-        
         setVisible(true);
     }
 
@@ -85,50 +45,6 @@ public class GameViewSwing extends JFrame implements GameView {
         }
     }
 
-    public class GridCell extends JPanel {
-
-        private final Color DEFAULT_BACKGROUND;
-        private Color background;
-        private final int numLine;
-        private final int numCol;
-
-        public GridCell(int line, int col) {
-            setBorder(new LineBorder(Color.LIGHT_GRAY));
-            background = getBackground();
-            DEFAULT_BACKGROUND = background;
-            numLine = line;
-            numCol = col;
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    setBackground(ONOVER_COLOR);
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    setBackground(background);
-                }
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (controller.isCellAlive(numLine, numCol)) {
-                        controller.killCell(numLine, numCol);
-                    } else {
-                        controller.createCell(numLine, numCol);
-                    }
-                }
-            });
-        }   
-
-        public void setAlive() {
-            background = ALIVE_COLOR;
-            setBackground(background);
-        }
-
-        private void setDead() {
-            background = DEFAULT_BACKGROUND;
-            setBackground(background);
-        }
-        
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -167,7 +83,7 @@ public class GameViewSwing extends JFrame implements GameView {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 gbc.gridx = col;
                 gbc.gridy = row;
-                gridPanel.add(new GridCell(row, col), gbc);
+                gridPanel.add(new GridCell(row, col, controller), gbc);
             }
         }
 
@@ -175,15 +91,16 @@ public class GameViewSwing extends JFrame implements GameView {
         rightPanel.setLayout(new javax.swing.BoxLayout(rightPanel, javax.swing.BoxLayout.Y_AXIS));
 
         strategiesPane.setBackground(new java.awt.Color(238, 238, 238));
-        strategiesPane.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Strategy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
+        strategiesPane.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray, 1, true), "Rules", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12), java.awt.Color.lightGray)); // NOI18N
 
         strategiesList.setBackground(new java.awt.Color(238, 238, 238));
-        strategiesList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        strategiesList.setModel(new RulesListModel(controller));
         strategiesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        strategiesList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                strategiesListMouseClicked(evt);
+            }
+        });
         strategiesPane.setViewportView(strategiesList);
 
         rightPanel.add(strategiesPane);
@@ -250,7 +167,6 @@ public class GameViewSwing extends JFrame implements GameView {
 
         bottomPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 15, 15, 15));
         bottomPanel.setAlignmentX(1.0F);
-        bottomPanel.setAlignmentY(0.5F);
         bottomPanel.setLayout(new javax.swing.BoxLayout(bottomPanel, javax.swing.BoxLayout.X_AXIS));
 
         prevButton.setText("<< Prev.");
@@ -332,6 +248,10 @@ public class GameViewSwing extends JFrame implements GameView {
         clearButtonActionPerformed(evt);
         controller.reset();
     }//GEN-LAST:event_resetButtonActionPerformed
+
+    private void strategiesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_strategiesListMouseClicked
+        controller.setActiveRule(strategiesList.getSelectedIndex());
+    }//GEN-LAST:event_strategiesListMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
