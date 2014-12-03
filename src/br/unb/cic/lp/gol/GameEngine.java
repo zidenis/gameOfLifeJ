@@ -163,24 +163,47 @@ public class GameEngine {
      */
     private int numberOfNeighborhoodAliveCells(int line, int clmn) {
         int alive = 0;
-        for (int nghbrLine = line - 1; nghbrLine <= line + 1; nghbrLine++) {
-            for (int nghbrClmn = clmn - 1; nghbrClmn <= clmn + 1; nghbrClmn++) {
-                int i = nghbrLine;
-                int j = nghbrClmn;
-                //Infinite grid transformation
-                if (nghbrLine == -1) i = height-1;
-                else if (nghbrLine == height) i = 0;
-                if (nghbrClmn == -1) j = width-1;
-                else if (nghbrClmn == width) j = 0;
-                if (validPosition(i, j) && 
-                   (!(nghbrLine == line && nghbrClmn == clmn)) &&
-                   (activeState.getCells()[i][j].isAlive())) {
-                    alive++;
+        if (validPosition(line, clmn)) {
+            for (int nghbrLine : new int[]{line - 1, line, line + 1}) {
+                for (int nghbrClmn : new int[]{clmn - 1, clmn, clmn + 1}) {
+                    int i = nghbrLine;
+                    int j = nghbrClmn;
+                    //Infinite grid transformation
+                    if (i== -1) i = height - 1;
+                    else if (i == height) i = 0;
+                    if (j == -1) j = width - 1;
+                    else if (j == width) j = 0;
+                    if ((!(nghbrLine == line && nghbrClmn == clmn)) &&
+                        (activeState.getCells()[i][j].isAlive())) {
+                            alive++;
+                        }
                 }
             }
         }
         return alive;
     }
+
+// Alternative implmentation
+//    private int numberOfNeighborhoodAliveCells(int line, int clmn) {
+//        int alive = 0;
+//        for (int nghbrLine = line - 1; nghbrLine <= line + 1; nghbrLine++) {
+//            for (int nghbrClmn = clmn - 1; nghbrClmn <= clmn + 1; nghbrClmn++) {
+//                int i = nghbrLine;
+//                int j = nghbrClmn;
+//                //Infinite grid transformation
+//                if (nghbrLine == -1) i = height-1;
+//                else if (nghbrLine == height) i = 0;
+//                if (nghbrClmn == -1) j = width-1;
+//                else if (nghbrClmn == width) j = 0;
+//                if (validPosition(i, j) && 
+//                   (!(nghbrLine == line && nghbrClmn == clmn)) &&
+//                   (activeState.getCells()[i][j].isAlive())) {
+//                    alive++;
+//                }
+//            }
+//        }
+//        return alive;
+//    }
 
     /*
      * Verifica se uma posicao (nghbrLine, nghbrClmn) referencia uma celula valida no tabuleiro.
