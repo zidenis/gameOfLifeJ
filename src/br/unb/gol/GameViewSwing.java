@@ -38,13 +38,17 @@ public class GameViewSwing extends JFrame implements GameView {
                 cell.setDead();
             }
         }
+        gridPanel.repaint();
         if (controller.numOfSavedGenerations() > 0) {
             prevButton.setEnabled(true);
         } else {
             prevButton.setEnabled(false);
         }
         if (stats.getAlivedCells() == 0) {
-            playButtonActionPerformed(null);
+            if (controller.isRunning()) {
+                controller.halt();
+                playButton.setText("Play >");
+            }
         }
     }
 
@@ -222,10 +226,9 @@ public class GameViewSwing extends JFrame implements GameView {
         if (label.equals("Play >")) {
             playButton.setText("Pause ");
             controller.start();
-        }
-        else {
+        } else {
             playButton.setText("Play >");
-             controller.halt();
+            controller.halt();
         }
     }//GEN-LAST:event_playButtonActionPerformed
 
@@ -247,7 +250,6 @@ public class GameViewSwing extends JFrame implements GameView {
     }//GEN-LAST:event_speedSliderStateChanged
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        clearButtonActionPerformed(evt);
         controller.reset();
     }//GEN-LAST:event_resetButtonActionPerformed
 
