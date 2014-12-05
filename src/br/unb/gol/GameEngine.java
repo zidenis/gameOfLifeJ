@@ -233,7 +233,8 @@ public class GameEngine {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (isCellAlive(i, j)) {
-                    killCell(i, j);
+                    activeState.getCells()[i][j].kill();
+                    activeState.getStatistics().incKilledCells();
                 }
             }
         }
@@ -241,9 +242,8 @@ public class GameEngine {
     }
 
     public void reset() {
-        killAllCells();
         activeState.setStatistics(new Statistics());
-        updateViews();
+        killAllCells();
     }
     
     public void attach(GameView listener) {
