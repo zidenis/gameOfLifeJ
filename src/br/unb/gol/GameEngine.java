@@ -1,4 +1,4 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -28,6 +28,8 @@ public class GameEngine {
     private Memento activeState;
     private List<Memento> savedStates;
     private GameRuleList rules;
+    
+    private List<GameView> listeners;
 
     /**
      * Construtor da classe Environment.
@@ -38,6 +40,7 @@ public class GameEngine {
     public GameEngine(int height, int width, Statistics statistics) {
         this.height = height;
         this.width = width;
+        listeners = new ArrayList();
         savedStates = new ArrayList<Memento>();
         activeState = new Memento(new Cell[height][width], statistics);
         for (int i = 0; i < height; i++) {
@@ -57,6 +60,7 @@ public class GameEngine {
 
     public void restorePreviousGeneraion() {
         activeState = savedStates.remove(savedStates.size() - 1);
+        updateViews();
     }
 
     public int getNumSavedStates() {
@@ -112,6 +116,7 @@ public class GameEngine {
             activeState.getStatistics().incKilledCells();
         }
         activeState.getStatistics().incNumOfGenerations();
+        updateViews();
     }
 
     /**
@@ -129,6 +134,7 @@ public class GameEngine {
         } else {
             new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
+        updateViews();
     }
 
     public void createCell(int i, int j) throws InvalidParameterException {
@@ -138,6 +144,7 @@ public class GameEngine {
         } else {
             new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
+        updateViews();
     }
 
     /**
@@ -219,6 +226,7 @@ public class GameEngine {
         } else {
             throw new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
+        updateViews();
     }
 
     public void killAllCells() {
@@ -229,10 +237,26 @@ public class GameEngine {
                 }
             }
         }
+        updateViews();
     }
 
     public void reset() {
         killAllCells();
         activeState.setStatistics(new Statistics());
+        updateViews();
+    }
+    
+    public void attach(GameView listener) {
+        listeners.add(listener);
+    }
+    
+    public void detach(GameView listener) {
+        listeners.remove(listener);
+    }
+    
+    public void updateViews() {
+        for (GameView gameView: listeners) {
+            gameView.update();
+        }
     }
 }

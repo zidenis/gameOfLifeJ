@@ -1,4 +1,4 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 import java.util.ArrayList;
 import java.util.List;

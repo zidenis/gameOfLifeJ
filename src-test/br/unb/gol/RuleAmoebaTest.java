@@ -1,5 +1,6 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
+import br.unb.gol.GameRule;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -8,25 +9,25 @@ import static org.junit.Assert.*;
  * Tests Conway's Rule
  * @author zidenis
  */
-public class RuleConwayTest {
+public class RuleAmoebaTest {
     
     GameRule rule;
     
     @Before
     public void setUp() {
-        rule = new GameRule("Conway's Life", new int[] {2, 3}, new int[] {3});
+        rule = new GameRule("Amoeba", new int[] {1,3,5,8}, new int[] {3,5,7});
     }
     
     @Test
     public void testShouldKeepAlive() {
-        assertFalse(rule.shouldKeepAlive(1));
-        assertTrue(rule.shouldKeepAlive(2));
+        assertTrue(rule.shouldKeepAlive(1));
+        assertFalse(rule.shouldKeepAlive(2));
         assertTrue(rule.shouldKeepAlive(3));
         assertFalse(rule.shouldKeepAlive(4));
-        assertFalse(rule.shouldKeepAlive(5));
+        assertTrue(rule.shouldKeepAlive(5));
         assertFalse(rule.shouldKeepAlive(6));
         assertFalse(rule.shouldKeepAlive(7));
-        assertFalse(rule.shouldKeepAlive(8));
+        assertTrue(rule.shouldKeepAlive(8));
     }
     
     @Test
@@ -35,9 +36,9 @@ public class RuleConwayTest {
         assertFalse(rule.shouldRevive(2));
         assertTrue(rule.shouldRevive(3));
         assertFalse(rule.shouldRevive(4));
-        assertFalse(rule.shouldRevive(5));
+        assertTrue(rule.shouldRevive(5));
         assertFalse(rule.shouldRevive(6));
-        assertFalse(rule.shouldRevive(7));
+        assertTrue(rule.shouldRevive(7));
         assertFalse(rule.shouldRevive(8));
     }
 }

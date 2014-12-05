@@ -1,4 +1,4 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -43,8 +43,10 @@ public class GameViewSwing extends JFrame implements GameView {
         } else {
             prevButton.setEnabled(false);
         }
+        if (stats.getAlivedCells() == 0) {
+            playButtonActionPerformed(null);
+        }
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

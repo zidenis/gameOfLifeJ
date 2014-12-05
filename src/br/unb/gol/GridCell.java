@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;

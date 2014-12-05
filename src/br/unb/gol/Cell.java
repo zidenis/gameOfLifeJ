@@ -1,4 +1,4 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 public class Cell {
 	private boolean alive = false;

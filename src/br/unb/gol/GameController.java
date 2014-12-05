@@ -1,4 +1,4 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 import java.security.InvalidParameterException;
 import java.util.Timer;
@@ -14,8 +14,7 @@ import java.util.TimerTask;
  */
 public class GameController {
 
-    private GameEngine engine;
-    private GameView view;
+    private final GameEngine engine;
 
     private boolean running;
     private int delayTime = 1000;
@@ -25,7 +24,7 @@ public class GameController {
     }
 
     public void setView(GameView view) {
-        this.view = view;
+        engine.attach(view);
     }
 
     public Statistics getStatistics() {
@@ -47,25 +46,15 @@ public class GameController {
 
     public void reset() {
         engine.reset();
-        view.update();
+        
     }
 
     public void nextGeneration() {
         engine.nextGeneration();
-        view.update();
-        runningTest();
+        continuousRunningTest();
     }
     
-    public void previousGeneration() {
-        engine.restorePreviousGeneraion();
-        view.update();
-    }
-    
-    public int numOfSavedGenerations() {
-        return engine.getNumSavedStates();
-    }
-
-    private void runningTest() {
+    private void continuousRunningTest() {
         if (running) {
             new Timer().schedule(
                     new TimerTask() {
@@ -79,10 +68,18 @@ public class GameController {
         }
     }
 
+    
+    public void previousGeneration() {
+        engine.restorePreviousGeneraion();
+    }
+    
+    public int numOfSavedGenerations() {
+        return engine.getNumSavedStates();
+    }
+
     public void createCell(int line, int col) {
         try {
             engine.createCell(line, col);
-            view.update();
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
         }
@@ -94,13 +91,11 @@ public class GameController {
 
     public void killCell(int lin, int col) {
         engine.killCell(lin, col);
-        view.update();
     }
 
     public void killAllCells() {
         engine.killAllCells();
         halt();
-        view.update();
     }
     
     public GameRuleList getRules() {
@@ -109,10 +104,14 @@ public class GameController {
     
     public void setActiveRule(int index) {
         engine.getRules().setActiveRule(index);
-        System.out.println(engine.getRules().getActiveRule() + "selected");
+        //System.out.println(engine.getRules().getActiveRule() + "selected");
     }
     
     public void addRule(GameRule rule) {
         engine.getRules().addNewRule(rule);
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }

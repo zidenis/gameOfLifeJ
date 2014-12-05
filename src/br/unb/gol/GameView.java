@@ -1,6 +1,5 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 public interface GameView {
-
     public void update();
 }

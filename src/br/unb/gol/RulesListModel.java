@@ -1,4 +1,4 @@
-package br.unb.cic.lp.gol;
+package br.unb.gol;
 
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
