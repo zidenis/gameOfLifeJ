@@ -1,11 +1,13 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
-/**
- *
- * @author zidenis
- */
 public class Memento {
-    private Cell[][] cells;
+    private final Cell[][] cells;
     private Statistics stats;
     
     public Memento(Cell[][] cells, Statistics statistics) {

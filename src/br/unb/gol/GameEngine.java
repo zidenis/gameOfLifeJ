@@ -1,3 +1,9 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
 import java.security.InvalidParameterException;
@@ -22,26 +28,27 @@ public class GameEngine {
 
     private final int MAX_SAVED_SATES = 10;
 
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
 
     private Memento activeState;
-    private List<Memento> savedStates;
-    private GameRuleList rules;
+    private final List<Memento> savedStates;
+    private final GameRuleList rules;
     
-    private List<GameView> listeners;
+    private final List<GameView> listeners;
 
     /**
      * Construtor da classe Environment.
      *
      * @param height dimensao vertical do ambiente
      * @param width dimentsao horizontal do ambiente
+     * @param statistics objeto de estatisticas
      */
     public GameEngine(int height, int width, Statistics statistics) {
         this.height = height;
         this.width = width;
         listeners = new ArrayList();
-        savedStates = new ArrayList<Memento>();
+        savedStates = new ArrayList<>();
         activeState = new Memento(new Cell[height][width], statistics);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -94,8 +101,8 @@ public class GameEngine {
     public void nextGeneration() {
         addState(activeState); // Adiciona estado atual na lista de estados salvos
         activeState = activeState.duplicate();
-        List<Cell> mustGenerate = new ArrayList<Cell>();
-        List<Cell> mustKill = new ArrayList<Cell>();
+        List<Cell> mustGenerate = new ArrayList<>();
+        List<Cell> mustKill = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (!activeState.getCells()[i][j].isAlive()) {
@@ -132,7 +139,7 @@ public class GameEngine {
             activeState.getCells()[i][j].rise();
             activeState.getStatistics().incGeneratedCells();
         } else {
-            new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
+            throw new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
         updateViews();
     }
@@ -142,7 +149,7 @@ public class GameEngine {
             activeState.getCells()[i][j].rise();
             activeState.getStatistics().incCreatedCells();
         } else {
-            new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
+            throw new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
         }
         updateViews();
     }

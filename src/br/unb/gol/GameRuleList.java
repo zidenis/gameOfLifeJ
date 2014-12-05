@@ -1,3 +1,9 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
 import java.util.ArrayList;
@@ -8,6 +14,7 @@ import java.util.List;
  * due to the emergence of complex behavior from a very simple system.
  * There are 262144 (2^218) distinct Life-like rules.
  * List of interesting rules: {@link http://fano.ics.uci.edu/ca/rules/list.html}
+ * @version 1.0
  * @author zidenis
  */
 public class GameRuleList {

@@ -1,3 +1,9 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
 import java.awt.Component;
@@ -5,9 +11,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.JFrame;
 
 /**
- * Atua como um componente de apresentacao (view), exibindo o estado atual do
- * game com uma implementacao baseada em caracteres Java Swing GUI.
- * 
+ * Game of Life Swing GUI
  * @version 1.0
  * @author zidenis
  */

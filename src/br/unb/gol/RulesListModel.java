@@ -1,8 +1,19 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
+/**
+ * GUI component
+ * @version 1.0
+ * @author zidenis
+ */
 public class RulesListModel implements ListModel {
     
     GameController controller;

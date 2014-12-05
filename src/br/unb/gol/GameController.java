@@ -1,3 +1,9 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
 import java.security.InvalidParameterException;

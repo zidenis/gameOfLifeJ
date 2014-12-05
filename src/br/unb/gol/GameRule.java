@@ -1,3 +1,9 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
 import java.util.HashSet;
@@ -9,6 +15,7 @@ import java.util.Set;
  * There are 262144 (2^218) distinct Life-like rules.
  * List of interesting rules: {@link http://fano.ics.uci.edu/ca/rules/list.html}
  * @author zidenis
+ * @version 1.0
  */
 public class GameRule {
 
@@ -25,8 +32,8 @@ public class GameRule {
     
     public GameRule(String ruleName, int[] survivalList, int[] birthList) {
         StringBuilder sb = new StringBuilder(ruleName).append(" (");
-        survivalSet = new HashSet<Integer>();
-        birthSet = new HashSet<Integer>();
+        survivalSet = new HashSet<>();
+        birthSet = new HashSet<>();
         for (int s: survivalList) {
             survivalSet.add(s);
             sb.append(s);

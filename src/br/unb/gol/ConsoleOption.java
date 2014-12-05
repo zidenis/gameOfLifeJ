@@ -1,5 +1,16 @@
+/**
+ * Game of Life
+ * @author zidenis
+ * @version 1.0
+ * @since dec/2014
+*/
 package br.unb.gol;
 
+/**
+ * Console UI component
+ * @version 1.0
+ * @author zidenis
+ */
 public enum ConsoleOption {
     
     CREATE_CELL(1, "Create Cell"),
