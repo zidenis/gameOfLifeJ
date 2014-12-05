@@ -12,19 +12,11 @@ import java.util.Scanner;
  */
 public class GameViewConsole implements GameView {
 
-    private static final String LINE = "---";
-    private static final String DEAD_CELL = "[ ]";
-    private static final String ALIVE_CELL = "[@]";
-
-    private static final int INVALID_OPTION = 0;
-    private static final int MAKE_CELL_ALIVE = 1;
-    private static final int NEXT_GENERATION = 2;
-    private static final int HALT = 3;
-
     private final GameController controller;
 
     /**
      * Construtor da classe GameBoard
+     *
      * @param controller gameController
      */
     public GameViewConsole(GameController controller) {
@@ -38,110 +30,49 @@ public class GameViewConsole implements GameView {
      */
     @Override
     public void update() {
-        System.out.print("\n\n");
-        printRowOfNumbers();
-        printLine();
-        for (int i = 0; i < Main.GRID_HEIGHT; i++) {
-            System.out.print(((i < 10) ? " " + i : i) + "| ");
-            for (int j = 0; j < Main.GRID_WIDTH; j++) {
-                System.out.print(controller.isCellAlive(i, j) ? ALIVE_CELL : DEAD_CELL);
-            }
-            System.out.println(" |" + i);
-        }
-        printLine();
-        printRowOfNumbers();
-        if (!controller.isRunning()) {
-            printStatistics();
-        }
+        Thread gridThread = new Thread(new ConsoleGrid(controller));
+        gridThread.start();
+//TODO get user input from console without block the program
+//        if (!controller.isRunning()) {
+//            readOption();
+//        }
     }
 
-    /*
-     * Imprime os identificadores das colunas na primeira linha do tabuleiro
-     */
-    private void printRowOfNumbers() {
-        System.out.print("     ");
-        for (int j = 0; j < Main.GRID_WIDTH; j++) {
-            System.out.print(j + (j < 10 ? "  " : " "));
-        }
-        System.out.print("\n");
-    }
-
-    /* Imprime uma linha usada como separador das linhas do tabuleiro */
-    private void printLine() {
-        System.out.print("   ");
-        for (int j = 0; j < Main.GRID_WIDTH; j++) {
-            System.out.print(LINE);
-        }
-        System.out.print("--\n");
-    }
-    
-    private void printStatistics() {
-        Statistics stats = controller.getStatistics();
-        System.out.println("\nCreated Cells: " + stats.getCreatedCells());
-        System.out.println("Generated Cells: " + stats.getGeneratedCells());
-        System.out.println("Killed Cells: " + stats.getKilledCells());
-        System.out.println("Alived Cells: " + stats.getAlivedCells());
-        System.out.println("Number of Generations: " + stats.getNumOfGenerations());
-    }
-
-    private void printOptions() {
-        Scanner s = new Scanner(System.in);
-        int option;
-        do {
-            System.out.println("Select one of the options: \n \n");
-            System.out.println("[1] Make a cell alive");
-            System.out.println("[2] Next generation");
-            System.out.println("[3] Halt");
-            System.out.print("\n \n Option: ");
-            option = parseOption(s.nextLine());
-        } while (option == 0);
-        switch (option) {
-            case MAKE_CELL_ALIVE:
+    public void readOption() {
+        //TODO get user input from console without block the program
+        ConsoleOption opt = null;
+        switch (opt) {
+            case CREATE_CELL:
                 makeCellAlive();
                 break;
-            case NEXT_GENERATION:
-                nextGeneration();
+            case PLAY:
+                controller.start();
                 break;
-            case HALT:
-                halt();
+            case NEXT_GENERATION:
+                controller.nextGeneration();
+                break;
+            case CLEAR:
+                controller.killAllCells();
+                break;
+            case RESET:
+                controller.reset();
+                break;
         }
     }
 
     private void makeCellAlive() {
         int i, j = 0;
-        Scanner s = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         do {
-            System.out.print("\n Inform the row number (0 - " + Main.GRID_HEIGHT + "): ");
-            i = s.nextInt();
-            System.out.print("\n Inform the column number (0 - " + Main.GRID_WIDTH + "): ");
-            j = s.nextInt();
+            System.out.print("Row number (0.." + Main.GRID_HEIGHT + "): ");
+            i = scanner.nextInt();
+            System.out.print("Column number (0.." + Main.GRID_WIDTH + "): ");
+            j = scanner.nextInt();
         } while (!validPosition(i, j));
         controller.createCell(i, j);
     }
 
-    private void nextGeneration() {
-        controller.nextGeneration();
-    }
-
-    private void halt() {
-        controller.halt();
-    }
-
     private boolean validPosition(int i, int j) {
-        System.out.println(i);
-        System.out.println(j);
         return i >= 0 && i < Main.GRID_HEIGHT && j >= 0 && j < Main.GRID_WIDTH;
-    }
-
-    private int parseOption(String option) {
-        if (option.equals("1")) {
-            return MAKE_CELL_ALIVE;
-        } else if (option.equals("2")) {
-            return NEXT_GENERATION;
-        } else if (option.equals("3")) {
-            return HALT;
-        } else {
-            return INVALID_OPTION;
-        }
     }
 }
