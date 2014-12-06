@@ -1,0 +1,113 @@
+[{
+  "rulestring" : "Amoeba", 
+  "survivalSet" : [1, 3, 5, 8],
+  "birthSet" : [3, 5, 7]
+},{
+  "rulestring" : "Assimilation", 
+  "survivalSet" : [4, 5, 6, 7],
+  "birthSet" : [3, 4, 5]
+},{
+  "rulestring" : "Backteria", 
+  "survivalSet" : [4, 5, 6],
+  "birthSet" : [3, 4]
+},{
+  "rulestring" : "Blinkers", 
+  "survivalSet" : [2],
+  "birthSet" : [3, 4, 5]
+},{
+  "rulestring" : "Bugs", 
+  "survivalSet" : [1, 5, 6, 7, 8],
+  "birthSet" : [3, 5, 6, 7]
+},{
+  "rulestring" : "Coagulations", 
+  "survivalSet" : [2, 3, 5, 6, 7, 8],
+  "birthSet" : [3, 7, 8]
+},{
+  "rulestring" : "Coral", 
+  "survivalSet" : [4, 5, 6, 7, 8],
+  "birthSet" : [3]
+},{
+  "rulestring" : "Day & Night", 
+  "survivalSet" : [3, 4, 6, 7, 8],
+  "birthSet" : [3, 6, 7, 8]
+},{
+  "rulestring" : "Diamoeba", 
+  "survivalSet" : [5, 6, 7, 8],
+  "birthSet" : [3, 5, 6, 7, 8]
+},{
+  "rulestring" : "Gnarl", 
+  "survivalSet" : [1],
+  "birthSet" : [1]
+},{
+  "rulestring" : "H-trees", 
+  "survivalSet" : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "birthSet" : [1]
+},{
+  "rulestring" : "HighLife", 
+  "survivalSet" : [2, 3],
+  "birthSet" : [3, 6]
+},{
+  "rulestring" : "Holstein", 
+  "survivalSet" : [4, 6, 7, 8],
+  "birthSet" : [3, 5, 6, 7, 8]
+},{
+  "rulestring" : "Iceballs", 
+  "survivalSet" : [5, 6, 7, 8],
+  "birthSet" : [2, 5, 6, 7, 8]
+},{
+  "rulestring" : "Land Rush", 
+  "survivalSet" : [2, 3, 4, 5, 7, 8],
+  "birthSet" : [3, 6]
+},{
+  "rulestring" : "Life Without Death", 
+  "survivalSet" : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "birthSet" : [3]
+},{
+  "rulestring" : "LongLife", 
+  "survivalSet" : [5],
+  "birthSet" : [3, 4, 5]
+},{
+  "rulestring" : "Majority", 
+  "survivalSet" : [5, 6, 7, 8],
+  "birthSet" : [4, 5, 6, 7, 8]
+},{
+  "rulestring" : "Maze", 
+  "survivalSet" : [1, 2, 3, 4, 5],
+  "birthSet" : [3]
+},{
+  "rulestring" : "Move", 
+  "survivalSet" : [2, 4, 5],
+  "birthSet" : [3, 6, 8]
+},{
+  "rulestring" : "Pseudo Life", 
+  "survivalSet" : [2, 3, 8],
+  "birthSet" : [3, 5, 7]
+},{
+  "rulestring" : "Replicator", 
+  "survivalSet" : [1, 3, 5, 7],
+  "birthSet" : [1, 3, 5, 7]
+},{
+  "rulestring" : "Seeds", 
+  "survivalSet" : [],
+  "birthSet" : [2]
+},{
+  "rulestring" : "Serviettes", 
+  "survivalSet" : [],
+  "birthSet" : [2, 3, 4]
+},{
+  "rulestring" : "Slow Blob", 
+  "survivalSet" : [1, 2, 5, 6, 7, 8],
+  "birthSet" : [3, 6, 7]
+},{
+  "rulestring" : "Stains", 
+  "survivalSet" : [2, 3, 5, 6, 7, 8],
+  "birthSet" : [3, 6, 7, 8]
+},{
+  "rulestring" : "2x2", 
+  "survivalSet" : [1, 2, 5],
+  "birthSet" : [3, 6]
+},{
+  "rulestring" : "3-4 Life", 
+  "survivalSet" : [3, 4],
+  "birthSet" : [3]
+}]

@@ -26,31 +26,40 @@ import org.json.simple.parser.JSONParser;
  */
 public class GameRuleList {
 
-    private final String RULES_FILE = "Rules.json";
+    private final String EXTRA_RULES_FILE = "ExtraRules.json";
     
     List<GameRule> gameRuleList;
     GameRule activeRule;
 
     public GameRuleList() {
         gameRuleList = new ArrayList();
+        //Adding Conway Game of Life Rule as Default rule
+        gameRuleList.add(new GameRule("Conway Life", new int[]{2, 3}, new int[]{3}));
+        activeRule = gameRuleList.get(0);
+        //Loading Extra Rules from file
         JSONParser parser = new JSONParser();
         try {
-            JSONArray rulesArray = (JSONArray) parser.parse(new FileReader(RULES_FILE));
-            for (Object ruleObj : rulesArray) {
-                
+            JSONArray rulesArray = (JSONArray) parser.parse(new FileReader(EXTRA_RULES_FILE));
+            for (Object obj : rulesArray) {
+                JSONObject jsonObj = (JSONObject) obj;
+                String rulestring = (String) jsonObj.get("rulestring");
+                JSONArray survivalSet = (JSONArray) jsonObj.get("survivalSet");
+                JSONArray birthSet = (JSONArray) jsonObj.get("birthSet");
+                int[] survivalArray = new int[survivalSet.size()];
+                int[] birthArray = new int[birthSet.size()];
+                for (int i = 0; i < survivalSet.size(); i++) {
+                    survivalArray[i] = Long.valueOf((long)survivalSet.get(i)).intValue();
+                }
+                for (int i = 0; i < birthSet.size(); i++) {
+                    birthArray[i] = Long.valueOf((long)birthSet.get(i)).intValue();
+                }
+                gameRuleList.add(new GameRule(rulestring, survivalArray, birthArray));
             }
-
         } catch (FileNotFoundException ex) {
-            System.err.println("Rules file not found: " + ex.getMessage());
+            System.out.println("Extra rules file not found: " + ex.getMessage());
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        
-        
-        gameRuleList.add(new GameRule("Conway Life", new int[]{2, 3}, new int[]{3}));
-        gameRuleList.add(new GameRule("Amoeba", new int[]{1, 3, 5, 8}, new int[]{3, 5, 7}));
-        
-        activeRule = gameRuleList.get(0);
+        }        
     }
 
     public GameRule getRuleAt(int index) {
