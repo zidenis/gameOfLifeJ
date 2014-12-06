@@ -8,7 +8,6 @@ package br.unb.gol.model;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.simple.JSONArray;
@@ -32,7 +31,7 @@ public class GameRuleList {
     GameRule activeRule;
 
     public GameRuleList() {
-        gameRuleList = new ArrayList();
+        gameRuleList = new ArrayList<GameRule>();
         //Adding Conway Game of Life Rule as Default rule
         gameRuleList.add(new GameRule("Conway Life", new int[]{2, 3}, new int[]{3}));
         activeRule = gameRuleList.get(0);

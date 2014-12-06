@@ -49,7 +49,7 @@ public class GameEngine {
     public GameEngine(int height, int width, Statistics statistics) {
         this.height = height;
         this.width = width;
-        listeners = new ArrayList();
+        listeners = new ArrayList<GameView>();
         savedStates = new ArrayList<>();
         activeState = new Memento(new Cell[height][width], statistics);
         for (int i = 0; i < height; i++) {
@@ -136,16 +136,6 @@ public class GameEngine {
      *
      * @throws InvalidParameterException caso nghbrLine posicao (i, j) nao seja valida.
      */
-    private void generateCell(int i, int j) throws InvalidParameterException {
-        if (validPosition(i, j)) {
-            activeState.getCells()[i][j].rise();
-            activeState.getStatistics().incGeneratedCells();
-        } else {
-            throw new InvalidParameterException("Invalid position (" + i + ", " + j + ")");
-        }
-        updateViews();
-    }
-
     public void createCell(int i, int j) throws InvalidParameterException {
         if (validPosition(i, j)) {
             activeState.getCells()[i][j].rise();
