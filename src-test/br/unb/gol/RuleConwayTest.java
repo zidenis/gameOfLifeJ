@@ -1,6 +1,6 @@
 package br.unb.gol;
 
-import br.unb.gol.GameRule;
+import br.unb.gol.model.GameRule;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

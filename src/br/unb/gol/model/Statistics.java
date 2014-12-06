@@ -4,7 +4,7 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.model;
 
 /**
  * Game Statistics
@@ -40,7 +40,7 @@ public class Statistics {
         return createdCells;
     }
 
-    public void incCreatedCells() {
+    protected void incCreatedCells() {
         createdCells++;
         alivedCells++;
     }
@@ -49,7 +49,7 @@ public class Statistics {
         return generatedCells;
     }
 
-    public void incGeneratedCells() {
+    protected void incGeneratedCells() {
         generatedCells++;
         alivedCells++;
     }
@@ -58,7 +58,7 @@ public class Statistics {
         return killedCells;
     }
 
-    public void incKilledCells() {
+    protected void incKilledCells() {
         killedCells++;
         alivedCells--;
     }
@@ -75,7 +75,7 @@ public class Statistics {
         return numOfGenerations;
     }
     
-    public void incNumOfGenerations() {
+    protected void incNumOfGenerations() {
         numOfGenerations++;
     }
 }

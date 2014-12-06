@@ -4,7 +4,7 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class GameRuleList {
         return gameRuleList.get(index);
     }
     
-    public GameRule getActiveRule() {
+    protected GameRule getActiveRule() {
         return activeRule;
     }
 

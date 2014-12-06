@@ -4,7 +4,11 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.view;
+
+import br.unb.gol.controller.GameController;
+import br.unb.gol.Main;
+import br.unb.gol.model.Statistics;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;

@@ -4,7 +4,7 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.model;
 
 import java.util.HashSet;
 import java.util.Set;

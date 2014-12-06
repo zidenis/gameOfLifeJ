@@ -4,7 +4,9 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.model;
+
+import br.unb.gol.view.GameView;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -106,10 +108,10 @@ public class GameEngine {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (!activeState.getCells()[i][j].isAlive()) {
-                    if (rules.getActiveRule().shouldRevive(numberOfNeighborhoodAliveCells(i, j))) {
+                    if (rules.getActiveRule().shouldRevive(numOfNghbrAliveCells(i, j))) {
                         mustGenerate.add(activeState.getCells()[i][j]);
                     }
-                } else if (!rules.getActiveRule().shouldKeepAlive(numberOfNeighborhoodAliveCells(i, j))) {
+                } else if (!rules.getActiveRule().shouldKeepAlive(numOfNghbrAliveCells(i, j))) {
                     mustKill.add(activeState.getCells()[i][j]);
                 }
             }
@@ -175,7 +177,7 @@ public class GameEngine {
      * Computa o numero de celulas vizinhas vivas, dada uma posicao no ambiente
      * de referencia identificada pelos argumentos (line,clmn).
      */
-    private int numberOfNeighborhoodAliveCells(int line, int clmn) {
+    private int numOfNghbrAliveCells(int line, int clmn) {
         int alive = 0;
         if (validPosition(line, clmn)) {
             for (int nghbrLine : new int[]{line - 1, line, line + 1}) {
@@ -198,7 +200,7 @@ public class GameEngine {
     }
 
 // Alternative implmentation
-//    private int numberOfNeighborhoodAliveCells(int line, int clmn) {
+//    private int numOfNghbrAliveCells(int line, int clmn) {
 //        int alive = 0;
 //        for (int nghbrLine = line - 1; nghbrLine <= line + 1; nghbrLine++) {
 //            for (int nghbrClmn = clmn - 1; nghbrClmn <= clmn + 1; nghbrClmn++) {
@@ -253,11 +255,11 @@ public class GameEngine {
         killAllCells();
     }
     
-    public void attach(GameView listener) {
+    public void attachView(GameView listener) {
         listeners.add(listener);
     }
     
-    public void detach(GameView listener) {
+    public void detachView(GameView listener) {
         listeners.remove(listener);
     }
     

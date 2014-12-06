@@ -4,7 +4,9 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.view;
+
+import br.unb.gol.controller.GameController;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;

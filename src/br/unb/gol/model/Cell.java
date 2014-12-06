@@ -4,7 +4,7 @@
  * @version 1.0
  * @since dec/2014
 */
-package br.unb.gol;
+package br.unb.gol.model;
 
 /**
  * Game of Life Cell
@@ -15,19 +15,19 @@ package br.unb.gol;
 public class Cell {
 	private boolean alive = false;
 
-	public boolean isAlive() {
+	protected boolean isAlive() {
 		return alive;
 	}
 
-	public void kill() {
+	protected void kill() {
 		this.alive = false;
 	}
 	
-	public void rise() {
+	protected void rise() {
 		this.alive = true;
 	}
         
-        public Cell duplicate() {
+        protected Cell duplicate() {
             Cell newCell = new Cell();
             newCell.alive = this.alive;
             return newCell;
