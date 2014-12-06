@@ -3,7 +3,10 @@
 @zidenis
 http://github.com/zidenis
 
-To run this game of life, simply double click the GoL.jar file.
+To run this game of life, simply double click the GoL.jar file. 
+
+To download: http://github.com/zidenis/gameOfLifeJ/releases
+
 Use the swing window to run your simulations.
 ![GUI](https://cloud.githubusercontent.com/assets/4968411/5328682/e0203014-7d70-11e4-95cb-3ae1238dca5a.png)
 **Additional rules can be put in ExtraRules.json file.** 
