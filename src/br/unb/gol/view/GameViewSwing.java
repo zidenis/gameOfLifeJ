@@ -6,10 +6,9 @@
 */
 package br.unb.gol.view;
 
-import br.unb.gol.controller.GameController;
 import br.unb.gol.Main;
+import br.unb.gol.controller.GameController;
 import br.unb.gol.model.Statistics;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import javax.swing.JFrame;

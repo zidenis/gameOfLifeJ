@@ -6,7 +6,8 @@
 */
 package br.unb.gol.model;
 
-import br.unb.gol.Main;
+import static br.unb.gol.Main.GRID_HEIGHT;
+import static br.unb.gol.Main.GRID_WIDTH;
 
 public class Memento {
     private final Cell[][] cells;
@@ -31,9 +32,9 @@ public class Memento {
     
     protected Memento duplicate() {
         Statistics newStatistics = new Statistics(stats.getCreatedCells(), stats.getGeneratedCells(), stats.getKilledCells(), stats.getAlivedCells(), stats.getNumOfGenerations());
-        Memento newState = new Memento(new Cell[Main.GRID_HEIGHT][Main.GRID_WIDTH], newStatistics);
-        for (int i = 0; i < Main.GRID_HEIGHT; i++) {
-            for (int j = 0; j < Main.GRID_WIDTH; j++) {
+        Memento newState = new Memento(new Cell[GRID_HEIGHT][GRID_WIDTH], newStatistics);
+        for (int i = 0; i < GRID_HEIGHT; i++) {
+            for (int j = 0; j < GRID_WIDTH; j++) {
                 newState.getCells()[i][j] = this.getCells()[i][j].duplicate();
             }
         }

@@ -1,9 +1,9 @@
-package br.unb.gol;
+package br.unb.gol.model;
 
-import br.unb.gol.model.GameRule;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Tests Conway's Rule

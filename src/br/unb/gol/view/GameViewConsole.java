@@ -1,14 +1,9 @@
-/**
- * Game of Life
- * @author zidenis
- * @version 1.0
- * @since dec/2014
-*/
+
 package br.unb.gol.view;
 
+import static br.unb.gol.Main.GRID_HEIGHT;
+import static br.unb.gol.Main.GRID_WIDTH;
 import br.unb.gol.controller.GameController;
-import br.unb.gol.Main;
-
 import java.util.Scanner;
 
 /**
@@ -73,15 +68,15 @@ public class GameViewConsole implements GameView {
         int i, j = 0;
         Scanner scanner = new Scanner(System.in);
         do {
-            System.out.print("Row number (0.." + Main.GRID_HEIGHT + "): ");
+            System.out.print("Row number (0.." + GRID_HEIGHT + "): ");
             i = scanner.nextInt();
-            System.out.print("Column number (0.." + Main.GRID_WIDTH + "): ");
+            System.out.print("Column number (0.." + GRID_WIDTH + "): ");
             j = scanner.nextInt();
         } while (!validPosition(i, j));
         controller.createCell(i, j);
     }
 
     private boolean validPosition(int i, int j) {
-        return i >= 0 && i < Main.GRID_HEIGHT && j >= 0 && j < Main.GRID_WIDTH;
+        return i >= 0 && i < GRID_HEIGHT && j >= 0 && j < GRID_WIDTH;
     }
 }

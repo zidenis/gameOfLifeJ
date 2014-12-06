@@ -9,8 +9,8 @@ package br.unb.gol;
 import br.unb.gol.controller.GameController;
 import br.unb.gol.model.GameEngine;
 import br.unb.gol.model.Statistics;
-import br.unb.gol.view.GameViewSwing;
 import br.unb.gol.view.GameViewConsole;
+import br.unb.gol.view.GameViewSwing;
 
 public class Main {
     public static final int GRID_WIDTH = 25;

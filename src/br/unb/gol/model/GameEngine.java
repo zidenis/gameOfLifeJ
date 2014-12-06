@@ -185,10 +185,16 @@ public class GameEngine {
                     int i = nghbrLine;
                     int j = nghbrClmn;
                     //Infinite grid transformation
-                    if (i== -1) i = height - 1;
-                    else if (i == height) i = 0;
-                    if (j == -1) j = width - 1;
-                    else if (j == width) j = 0;
+                    if (i== -1) {
+                        i = height - 1;
+                    } else if (i == height) {
+                        i = 0;
+                    }
+                    if (j == -1) {
+                        j = width - 1;
+                    } else if (j == width) {
+                        j = 0;
+                    }
                     if ((!(nghbrLine == line && nghbrClmn == clmn)) &&
                         (activeState.getCells()[i][j].isAlive())) {
                             alive++;

@@ -6,12 +6,11 @@
 */
 package br.unb.gol.controller;
 
+import br.unb.gol.model.GameEngine;
 import br.unb.gol.model.GameRule;
 import br.unb.gol.model.GameRuleList;
-import br.unb.gol.model.GameEngine;
 import br.unb.gol.model.Statistics;
 import br.unb.gol.view.GameView;
-
 import java.security.InvalidParameterException;
 import java.util.Timer;
 import java.util.TimerTask;
